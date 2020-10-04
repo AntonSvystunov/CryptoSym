@@ -101,6 +101,16 @@ public static void InvMixColumns(byte[] state);
 public static uint[] KeyExpansion(byte[] key);
 public static void AddRoundKey(byte[] state, uint[] w);
 ```
+## Benchmark
+File size: 12 kb
+| Algorithm	| Encryption time (ms) | Decryption time (ms) |
+|---|---|---|
+| AES128 | 148 | 127 |
+| AES128 - Parallel | 122	| 24 |
+| AES192 | 73	| 148 |
+| AES192 - Parallel | 18 | 32 |
+| AES256 | 95 | 191 |
+| AES256- Parallel | 19 | 42 |
 
 
 
