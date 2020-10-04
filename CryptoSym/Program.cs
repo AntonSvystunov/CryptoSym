@@ -20,7 +20,7 @@ namespace CryptoSym
             Console.WriteLine($"Time: {sw.ElapsedMilliseconds} ms.");
             Console.WriteLine("Decryption: ");
             sw.Restart();
-            var roundTrip = context.DecryptBytes(bytes, cipher, parallel);
+            var roundTrip = context.DecryptBytes(encryptedBytes, cipher, parallel);
             sw.Stop();
             Console.WriteLine($"Time: {sw.ElapsedMilliseconds} ms.");
         }
@@ -83,7 +83,7 @@ namespace CryptoSym
         
         static void Main(string[] args)
         {
-            var inputFile = "1gb.test";
+            var inputFile = "word.test.docx";///"1gb.test";
             PrintReport(inputFile);
         }
     }
