@@ -216,7 +216,7 @@ namespace CryptoSym.Kalyna
             int shift = -1;
 
             byte[] state = WordsToBytes(lstate);
-            byte[] nstate = new byte[nb * sizeof(ulong)];
+            byte[] nstate = new byte[nb * sizeof(ulong) / sizeof(byte)];
 
             for (int row = 0; row < sizeof(ulong); ++row)
             {
@@ -236,7 +236,7 @@ namespace CryptoSym.Kalyna
             int shift = -1;
 
             byte[] state = WordsToBytes(lstate);
-            byte[] nstate = new byte[nb * sizeof(ulong)];
+            byte[] nstate = new byte[nb * sizeof(ulong)/sizeof(byte)];
 
             for (int row = 0; row < sizeof(ulong); ++row)
             {
@@ -324,7 +324,7 @@ namespace CryptoSym.Kalyna
         private static byte[] WordsToBytes(ulong[] words)
         {
             bool isLittleEndian = true;
-            byte[] data = new byte[words.Length * 8];
+            byte[] data = new byte[words.Length * sizeof(ulong) / sizeof(byte)];
             int offset = 0;
             foreach (long value in words)
             {
@@ -340,9 +340,150 @@ namespace CryptoSym.Kalyna
             return data;
         }
 
-        public static ulong[][] KeyExpansion()
+        public static void EncipherRound(ref ulong[] state)
         {
-            throw new NotImplementedException();
+            SubBytes(state, state.Length);
+            ShiftRows(ref state, state.Length);
+            MixColumns(ref state, state.Length);
+        }
+
+
+        public static void KeyExpandKt(ulong[] key, uint nb, uint nk, ref ulong[] lstate, ref ulong[] kt)
+        {
+            ulong[] k0 = new ulong[nb];
+            ulong[] k1 = new ulong[nb];
+
+            lstate.Initialize();
+           
+            lstate[0] += nb + nk + 1;
+
+            if (nb == nk)
+            {
+                Array.Copy(key, k0, nb);
+                Array.Copy(key, k1, nb);
+            }
+            else
+            {
+                Array.Copy(key, k0, nb);
+                Array.Copy(key, nb, k1, 0, nb);
+            }
+
+            AddRoundKey(k0, lstate);
+            EncipherRound(ref lstate);
+            XorRoundKey(k1, lstate);
+            EncipherRound(ref lstate);
+            AddRoundKey(k0, lstate);
+            EncipherRound(ref lstate);
+            Array.Copy(lstate, kt, nb);
+        }
+
+        public static void KeyExpandEven(ulong[] key, uint nb, uint nk, uint nr, ref ulong[] lstate, ref ulong[] kt, ref ulong[][] roundKeys)
+        {
+            ulong[] initial_data = new ulong[nk];
+            ulong[] kt_round = new ulong[nb];
+            ulong[] tmv = new ulong[nb];
+            int round = 0;
+
+            Array.Copy(key, initial_data, nk);
+            
+            for (int i = 0; i < nb; ++i)
+            {
+                tmv[i] = 0x0001000100010001;
+            }
+
+            while (true)
+            {
+                Array.Copy(kt, lstate, nb);
+                AddRoundKey(tmv, lstate);
+                Array.Copy(lstate, kt_round, nb);
+                Array.Copy(initial_data, lstate, nb);
+
+                AddRoundKey(kt_round, lstate);
+                EncipherRound(ref lstate);
+                XorRoundKey(kt_round, lstate);
+                EncipherRound(ref lstate);
+                AddRoundKey(kt_round, lstate);
+
+                Array.Copy(lstate, roundKeys[round], nb);
+
+                if (nr == round)
+                    break;
+
+                if (nk != nb)
+                {
+                    round += 2;
+
+                    ShiftLeft(tmv);
+                    Array.Copy(kt, lstate, nb);
+                    AddRoundKey(tmv, lstate);
+                    Array.Copy(lstate, kt_round, nb);
+                    Array.Copy(initial_data, nb, lstate, 0, nb);
+                    AddRoundKey(kt_round, lstate);
+                    EncipherRound(ref lstate);
+                    XorRoundKey(kt_round, lstate);
+                    EncipherRound(ref lstate);
+                    AddRoundKey(kt_round, lstate);
+
+                    Array.Copy(lstate, roundKeys[round], nb);
+
+                    if (nr == round)
+                        break;
+                }
+                round += 2;
+                ShiftLeft(tmv);
+                Rotate(initial_data);
+            }
+        }
+
+        private static void Rotate(ulong[] state)
+        {
+            ulong temp = state[0];
+            for (int i = 1; i < state.Length; ++i)
+            {
+                state[i - 1] = state[i];
+            }
+            state[state.Length - 1] = temp;
+        }
+
+        private static void ShiftLeft(ulong[] state)
+        {
+            for (int i = 0; i < state.Length; ++i)
+            {
+                state[i] <<= 1;
+            }
+        }
+
+        private static void RotateLeft(ref ulong[] state)
+        {
+            int rotateBytes = 2 * state.Length + 3;
+            int bytesNum = state.Length * (sizeof(ulong) / sizeof(byte));
+
+            byte[] bytes = WordsToBytes(state);
+            byte[] buffer = new byte[rotateBytes];
+
+            Array.Copy(bytes, buffer, rotateBytes);
+            Array.ConstrainedCopy(bytes, rotateBytes, bytes, 0, bytesNum - rotateBytes);
+            Array.Copy(buffer, 0, bytes, bytesNum - rotateBytes, rotateBytes);
+
+            state = BytesToWords(bytes);
+        }
+
+        private static void KeyExpandOdd(uint nb, uint nr, ref ulong[][] roundKeys)
+        {
+            for (int i = 1; i < nr; i += 2)
+            {
+                Array.Copy(roundKeys[i - 1], roundKeys[i], nb);
+                RotateLeft(ref roundKeys[i]);
+            }
+        }
+
+        public static ulong[][] KeyExpansion(uint nb)
+        {
+            ulong[] kt = new ulong[nb];
+            ulong[][] roundKeys = new ulong[][];
+            KeyExpandKt(key, ctx, kt);
+            KeyExpandEven(key, kt, ctx);
+            KeyExpandOdd(ctx);
         }
 
         private static ulong[] BytesToWords(byte[] bytes)

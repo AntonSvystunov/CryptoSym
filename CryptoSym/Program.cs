@@ -83,7 +83,7 @@ namespace CryptoSym
         
         static void Main(string[] args)
         {
-            var inputFile = "word.test.docx";///"1gb.test";
+            var inputFile = "1gb.test";
             PrintReport(inputFile);
         }
     }
