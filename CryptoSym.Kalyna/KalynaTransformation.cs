@@ -479,11 +479,7 @@ namespace CryptoSym.Kalyna
 
         public static ulong[][] KeyExpansion(uint nb)
         {
-            ulong[] kt = new ulong[nb];
-            ulong[][] roundKeys = new ulong[][];
-            KeyExpandKt(key, ctx, kt);
-            KeyExpandEven(key, kt, ctx);
-            KeyExpandOdd(ctx);
+            throw new NotImplementedException();
         }
 
         private static ulong[] BytesToWords(byte[] bytes)
