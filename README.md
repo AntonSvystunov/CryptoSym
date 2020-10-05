@@ -113,7 +113,15 @@ File size: 12 kb
 | AES256- Parallel | 19 | 42 |
 
 
-
+File size: 1 gb
+| Algorithm	| Encryption time (ms) | Decryption time (ms) |
+|---|---|---|
+| AES128 | 4309253 | 5189360 |
+| AES128 - Parallel | 1827301	| 1727192 |
+| AES192 | -	| - |
+| AES192 - Parallel | - | - |
+| AES256 | - | - |
+| AES256- Parallel | - | - |
 
 
 
