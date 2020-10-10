@@ -1,4 +1,5 @@
 ﻿using CryptoSym.AES;
+using CryptoSym.RC4;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -83,8 +84,24 @@ namespace CryptoSym
         
         static void Main(string[] args)
         {
-            var inputFile = "1gb.test";
-            PrintReport(inputFile);
+            var expected = "Test text needed to be encoded. Hello world. 123455";
+            var key = "MyStr0ngPa$$word12^9_2l";
+
+            var plainBytes = Encoding.Default.GetBytes(expected);
+            var keyBytes = Encoding.Default.GetBytes(key);
+
+            var rc4 = RC4ContextFactory.GetContext(RC4BlockSize.Short);
+
+            var encodedBytes = rc4.Encrypt(plainBytes, keyBytes);
+            var decodedBytes = rc4.Decrypt(encodedBytes, keyBytes);
+
+            var actual = Encoding.Default.GetString(decodedBytes);
+
+            Console.WriteLine(expected);
+            Console.WriteLine(actual);
+
+            PrintPlain(plainBytes);
+            PrintPlain(decodedBytes);
         }
     }
 }

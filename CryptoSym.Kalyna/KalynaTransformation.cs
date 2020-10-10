@@ -347,6 +347,12 @@ namespace CryptoSym.Kalyna
             MixColumns(ref state, state.Length);
         }
 
+        public static void DecipherRound(ref ulong[] state)
+        {
+            InvMixColumns(ref state, state.Length);
+            InvShiftRows(ref state, state.Length);
+            InvSubBytes(state, state.Length);
+        }
 
         public static void KeyExpandKt(ulong[] key, uint nb, uint nk, ref ulong[] lstate, ref ulong[] kt)
         {
@@ -477,9 +483,19 @@ namespace CryptoSym.Kalyna
             }
         }
 
-        public static ulong[][] KeyExpansion(uint nb)
+        public static ulong[][] KeyExpansion(ulong[] key, ref ulong[] lstate, uint nb, uint nk, uint nr)
         {
-            throw new NotImplementedException();
+            ulong[] kt = new ulong[nb];
+            ulong[][] roundKeys = new ulong[nr + 1][];
+            for (int r = 0; r < roundKeys.Length; r++)
+            {
+                roundKeys[r] = new ulong[nb];
+            }
+            KeyExpandKt(key, nb, nk, ref lstate, ref kt);
+            KeyExpandEven(key, nb, nk, nr, ref lstate, ref kt, ref roundKeys);
+            KeyExpandOdd(nb, nr, ref roundKeys);
+
+            return roundKeys;
         }
 
         private static ulong[] BytesToWords(byte[] bytes)

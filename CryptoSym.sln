@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSym.AES", "CryptoSym.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSym.AES.Tests", "CryptoSym.AES.Tests\CryptoSym.AES.Tests.csproj", "{67B9DC48-F6E7-4875-AA40-E5BB8BB89D57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSym.Kalyna", "CryptoSym.Kalyna\CryptoSym.Kalyna.csproj", "{68C41E61-7452-4E42-B553-A33417AFA44A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSym.Kalyna", "CryptoSym.Kalyna\CryptoSym.Kalyna.csproj", "{68C41E61-7452-4E42-B553-A33417AFA44A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSym.RC4", "CryptoSym.RC4\CryptoSym.RC4.csproj", "{950550DC-67C2-41E9-9B09-C407A6E69891}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSym.RC4.Tests", "CryptoSym.RC4.Tests\CryptoSym.RC4.Tests.csproj", "{845F712A-2993-468B-8FA2-9265DF92B90F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{68C41E61-7452-4E42-B553-A33417AFA44A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68C41E61-7452-4E42-B553-A33417AFA44A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68C41E61-7452-4E42-B553-A33417AFA44A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{950550DC-67C2-41E9-9B09-C407A6E69891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{950550DC-67C2-41E9-9B09-C407A6E69891}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{950550DC-67C2-41E9-9B09-C407A6E69891}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{950550DC-67C2-41E9-9B09-C407A6E69891}.Release|Any CPU.Build.0 = Release|Any CPU
+		{845F712A-2993-468B-8FA2-9265DF92B90F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{845F712A-2993-468B-8FA2-9265DF92B90F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{845F712A-2993-468B-8FA2-9265DF92B90F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{845F712A-2993-468B-8FA2-9265DF92B90F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CryptoSym.AES\CryptoSym.AES.csproj" />
+    <ProjectReference Include="..\CryptoSym.Kalyna\CryptoSym.Kalyna.csproj" />
+    <ProjectReference Include="..\CryptoSym.RC4\CryptoSym.RC4.csproj" />
   </ItemGroup>
 
 </Project>
