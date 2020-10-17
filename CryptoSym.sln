@@ -11,9 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSym.AES.Tests", "Cryp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSym.Kalyna", "CryptoSym.Kalyna\CryptoSym.Kalyna.csproj", "{68C41E61-7452-4E42-B553-A33417AFA44A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSym.RC4", "CryptoSym.RC4\CryptoSym.RC4.csproj", "{950550DC-67C2-41E9-9B09-C407A6E69891}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSym.RC4", "CryptoSym.RC4\CryptoSym.RC4.csproj", "{950550DC-67C2-41E9-9B09-C407A6E69891}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSym.RC4.Tests", "CryptoSym.RC4.Tests\CryptoSym.RC4.Tests.csproj", "{845F712A-2993-468B-8FA2-9265DF92B90F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoSym.RC4.Tests", "CryptoSym.RC4.Tests\CryptoSym.RC4.Tests.csproj", "{845F712A-2993-468B-8FA2-9265DF92B90F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSym.Salsa20", "CryptoSym.Salsa20\CryptoSym.Salsa20.csproj", "{979B4475-C377-4CD5-A5F5-C2C190017807}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSym.Salsa20.Tests", "CryptoSym.Salsa20.Tests\CryptoSym.Salsa20.Tests.csproj", "{BB273393-D73A-4344-9BA4-29222B574E79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{845F712A-2993-468B-8FA2-9265DF92B90F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{845F712A-2993-468B-8FA2-9265DF92B90F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{845F712A-2993-468B-8FA2-9265DF92B90F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{979B4475-C377-4CD5-A5F5-C2C190017807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{979B4475-C377-4CD5-A5F5-C2C190017807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{979B4475-C377-4CD5-A5F5-C2C190017807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{979B4475-C377-4CD5-A5F5-C2C190017807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB273393-D73A-4344-9BA4-29222B574E79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB273393-D73A-4344-9BA4-29222B574E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB273393-D73A-4344-9BA4-29222B574E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB273393-D73A-4344-9BA4-29222B574E79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

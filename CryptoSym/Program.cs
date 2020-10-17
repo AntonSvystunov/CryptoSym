@@ -84,24 +84,29 @@ namespace CryptoSym
         
         static void Main(string[] args)
         {
-            var expected = "Test text needed to be encoded. Hello world. 123455";
-            var key = "MyStr0ngPa$$word12^9_2l";
+            //var expected = "Test text needed to be encoded. Hello world. 123455";
+            //var key = "MyStr0ngPa$$word12^9_2l";
 
-            var plainBytes = Encoding.Default.GetBytes(expected);
-            var keyBytes = Encoding.Default.GetBytes(key);
+            //var plainBytes = Encoding.Default.GetBytes(expected);
+            //var keyBytes = Encoding.Default.GetBytes(key);
 
-            var rc4 = RC4ContextFactory.GetContext(RC4BlockSize.Short);
+            //var rc4 = RC4ContextFactory.GetContext(RC4BlockSize.Short);
 
-            var encodedBytes = rc4.Encrypt(plainBytes, keyBytes);
-            var decodedBytes = rc4.Decrypt(encodedBytes, keyBytes);
+            //var encodedBytes = rc4.Encrypt(plainBytes, keyBytes);
+            //var decodedBytes = rc4.Decrypt(encodedBytes, keyBytes);
 
-            var actual = Encoding.Default.GetString(decodedBytes);
+            //var actual = Encoding.Default.GetString(decodedBytes);
 
-            Console.WriteLine(expected);
-            Console.WriteLine(actual);
+            //Console.WriteLine(expected);
+            //Console.WriteLine(actual);
 
-            PrintPlain(plainBytes);
-            PrintPlain(decodedBytes);
+            //PrintPlain(plainBytes);
+            //PrintPlain(decodedBytes);
+
+            var a = ASCIIEncoding.ASCII.GetString(new byte[] { 248, 46, 173, 39 });
+            var b = ASCIIEncoding.ASCII.GetString(BitConverter.GetBytes((uint)1634760805));
+
+            Console.WriteLine(a + " " + b);
         }
     }
 }
