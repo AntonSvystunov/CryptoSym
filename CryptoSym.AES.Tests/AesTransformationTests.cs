@@ -142,6 +142,222 @@ namespace CryptoSym.AES.Tests
         }
 
         [Fact]
+        public void Correctness128Parallel()
+        {
+            var plainText = "Hello world123456788993812371237123789123";
+            var cipherKey128 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+
+            var aes = AesContext.AES128;
+            aes.Parallel = true;
+
+            byte[] encrypted;
+            using (var encryptor = aes.CreateEncryptor(cipherKey128, null))
+            {
+                encrypted = CryptoHelpers.EncryptString(encryptor, plainText);
+            }
+
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey128, null))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
+
+            Assert.Equal(plainText, actual);
+        }
+
+        [Fact]
+        public void Correctness128CBC()
+        {
+            var plainText = "Hello world123456788993812371237123789123";
+            var cipherKey128 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+
+            var aes = AesContext.AES128;
+            aes.AesStreamMode = AesStreamMode.CBC;
+            aes.GenerateIV();
+
+            byte[] encrypted;
+            byte[] iv = (byte[])aes.IV.Clone();
+
+            using (var encryptor = aes.CreateEncryptor(cipherKey128, iv))
+            {
+                encrypted = CryptoHelpers.EncryptString(encryptor, plainText);
+            }
+
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey128, iv))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
+
+            Assert.Equal(plainText, actual);
+        }
+
+        [Fact]
+        public void Correctness128CBCParallel()
+        {
+            var plainText = "Hello world123456788993812371237123789123";
+            var cipherKey128 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+
+            var aes = AesContext.AES128;
+            aes.AesStreamMode = AesStreamMode.CBC;
+            aes.Parallel = true;
+            aes.GenerateIV();
+
+            byte[] encrypted;
+            byte[] iv = (byte[])aes.IV.Clone();
+
+            using (var encryptor = aes.CreateEncryptor(cipherKey128, iv))
+            {
+                encrypted = CryptoHelpers.EncryptString(encryptor, plainText);
+            }
+
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey128, iv))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
+
+            Assert.Equal(plainText, actual);
+        }
+
+        [Fact]
+        public void Correctness128CFB()
+        {
+            var plainText = "Hello world123456788993812371237123789123";
+            var cipherKey128 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+
+            var aes = AesContext.AES128;
+            aes.AesStreamMode = AesStreamMode.CFB;
+            aes.GenerateIV();
+
+            byte[] encrypted;
+            byte[] iv = (byte[])aes.IV.Clone();
+
+            using (var encryptor = aes.CreateEncryptor(cipherKey128, iv))
+            {
+                encrypted = CryptoHelpers.EncryptString(encryptor, plainText);
+            }
+
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey128, iv))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
+
+            Assert.Equal(plainText, actual);
+        }
+
+        [Fact]
+        public void Correctness128CFBParallel()
+        {
+            var plainText = "Hello world123456788993812371237123789123";
+            var cipherKey128 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+
+            var aes = AesContext.AES128;
+            aes.AesStreamMode = AesStreamMode.CBC;
+            aes.Parallel = true;
+            aes.GenerateIV();
+
+            byte[] encrypted;
+            byte[] iv = (byte[])aes.IV.Clone();
+
+            using (var encryptor = aes.CreateEncryptor(cipherKey128, iv))
+            {
+                encrypted = CryptoHelpers.EncryptString(encryptor, plainText);
+            }
+
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey128, iv))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
+
+            Assert.Equal(plainText, actual);
+        }
+
+        [Fact]
+        public void Correctness128OFB()
+        {
+            var plainText = "Hello world123456788993812371237123789123";
+            var cipherKey128 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+
+            var aes = AesContext.AES128;
+            aes.AesStreamMode = AesStreamMode.OFB;
+            aes.GenerateIV();
+
+            byte[] encrypted;
+            byte[] iv = (byte[])aes.IV.Clone();
+
+            using (var encryptor = aes.CreateEncryptor(cipherKey128, iv))
+            {
+                encrypted = CryptoHelpers.EncryptString(encryptor, plainText);
+            }
+
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey128, iv))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
+
+            Assert.Equal(plainText, actual);
+        }
+
+        [Fact]
+        public void Correctness128CTR()
+        {
+            var plainText = "Hello world123456788993812371237123789123";
+            var cipherKey128 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+
+            var aes = AesContext.AES128;
+            aes.AesStreamMode = AesStreamMode.CTR;
+            aes.GenerateIV();
+
+            byte[] encrypted;
+            byte[] iv = (byte[])aes.IV.Clone();
+
+            using (var encryptor = aes.CreateEncryptor(cipherKey128, iv))
+            {
+                encrypted = CryptoHelpers.EncryptString(encryptor, plainText);
+            }
+
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey128, iv))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
+
+            Assert.Equal(plainText, actual);
+        }
+
+        [Fact]
+        public void Correctness128CTRParallel()
+        {
+            var plainText = "Hello world123456788993812371237123789123";
+            var cipherKey128 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+
+            var aes = AesContext.AES128;
+            aes.AesStreamMode = AesStreamMode.CTR;
+            aes.Parallel = true;
+            aes.GenerateIV();
+
+            byte[] encrypted;
+            byte[] iv = (byte[])aes.IV.Clone();
+
+            using (var encryptor = aes.CreateEncryptor(cipherKey128, iv))
+            {
+                encrypted = CryptoHelpers.EncryptString(encryptor, plainText);
+            }
+
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey128, iv))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
+
+            Assert.Equal(plainText, actual);
+        }
+
+        [Fact]
         public void Correctness192()
         {
             var plainText = "Hello world123456788993812371237123789123";

@@ -64,12 +64,12 @@ namespace CryptoSym.Salsa20
 
         public override void GenerateIV()
         {
-            IV = GetRandomBytes(8);
+            IVValue = GetRandomBytes(8);
         }
 
         public override void GenerateKey()
         {
-            Key = GetRandomBytes(KeySize / 8);
+            KeyValue = GetRandomBytes(KeySize / 8);
         }
 
         private static byte[] GetRandomBytes(int byteCount)

@@ -43,7 +43,7 @@ namespace CryptoSym.AES
         {
             if (!ValidKeySize(rgbKey.Length * 8))
             {
-                throw new CryptographicException("Invalid key size; it must be 128 or 256 bits.");
+                throw new CryptographicException("Invalid key size; it must be 128, 192 or 256  bits.");
             }
 
             return new AesDecryptor(rgbKey, rgbIV, Parallel, AesStreamMode);
@@ -53,7 +53,7 @@ namespace CryptoSym.AES
         {
             if (!ValidKeySize(rgbKey.Length * 8))
             {
-                throw new CryptographicException("Invalid key size; it must be 128 or 256 bits.");
+                throw new CryptographicException("Invalid key size; it must be 128, 192 or 256 bits.");
             }
 
             return new AesEncryptor(rgbKey, rgbIV, Parallel, AesStreamMode);
@@ -74,12 +74,12 @@ namespace CryptoSym.AES
 
         public override void GenerateIV()
         {
-            IV = GetRandomBytes(BlockSize / 8);
+            IVValue = GetRandomBytes(BlockSize / 8);
         }
 
         public override void GenerateKey()
         {
-            Key = GetRandomBytes(KeySize / 8);
+            KeyValue = GetRandomBytes(KeySize / 8);
         }
 
         private static byte[] GetRandomBytes(int byteCount)
@@ -87,7 +87,7 @@ namespace CryptoSym.AES
             byte[] bytes = new byte[byteCount];
             using (RandomNumberGenerator rng = new RNGCryptoServiceProvider())
             {
-                rng.GetBytes(bytes);
+                rng.GetBytes(bytes, 0, byteCount);
             }
             return bytes;
         }

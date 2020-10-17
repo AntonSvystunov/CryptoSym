@@ -207,7 +207,9 @@ namespace CryptoSym.AES
             int Nr = cipherKey.Length / 4 + Nb + 2;
 
             byte[] state = (byte[])plainText.Clone();
-            uint[] schedule = KeyExpansion(cipherKey);
+            byte[] key = (byte[])cipherKey.Clone();
+
+            uint[] schedule = KeyExpansion(key);
             AddRoundKey(state, schedule.Take(Nb).ToArray());
 
             for (int round = 1; round < Nr; round++)
@@ -224,12 +226,14 @@ namespace CryptoSym.AES
             return state;
         }
 
-        public static byte[] DecryptBlock(byte[] chipherText, byte[] chipherKey)
+        public static byte[] DecryptBlock(byte[] chipherText, byte[] cipherKey)
         {
-            int Nr = chipherKey.Length / 4 + Nb + 2;
-
+            int Nr = cipherKey.Length / 4 + Nb + 2;
+            
             byte[] state = (byte[])chipherText.Clone();
-            uint[] schedule = KeyExpansion(chipherKey);
+            byte[] key = (byte[])cipherKey.Clone();
+
+            uint[] schedule = KeyExpansion(key);
 
             AddRoundKey(state, schedule.Skip(Nr * Nb).Take(Nb).ToArray());
 
