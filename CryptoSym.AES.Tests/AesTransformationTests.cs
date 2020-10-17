@@ -1,5 +1,7 @@
+using CryptoSym.Common;
 using System;
 using System.Linq;
+using System.Text;
 using Xunit;
 
 namespace CryptoSym.AES.Tests
@@ -122,11 +124,19 @@ namespace CryptoSym.AES.Tests
         {
             var plainText = "Hello world123456788993812371237123789123";
             var cipherKey128 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
-
+            
             var aes = AesContext.AES128;
-            var encrypted = aes.EncryptStringToBytes(plainText, cipherKey128);
+            byte[] encrypted;
+            using (var encryptor = aes.CreateEncryptor(cipherKey128, null))
+            {
+                encrypted = CryptoHelpers.EncryptString(encryptor, plainText);
+            }
 
-            var actual = aes.DecryptStringFromBytes(encrypted, cipherKey128);
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey128, null))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
 
             Assert.Equal(plainText, actual);
         }
@@ -138,9 +148,17 @@ namespace CryptoSym.AES.Tests
             var cipherKey192 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, };
 
             var aes = AesContext.AES192;
-            var encrypted = aes.EncryptStringToBytes(plainText, cipherKey192);
+            byte[] encrypted;
+            using (var encryptor = aes.CreateEncryptor(cipherKey192, null))
+            {
+                encrypted = CryptoHelpers.EncryptString(encryptor, plainText);
+            }
 
-            var actual = aes.DecryptStringFromBytes(encrypted, cipherKey192);
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey192, null))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
 
             Assert.Equal(plainText, actual);
         }
@@ -152,9 +170,17 @@ namespace CryptoSym.AES.Tests
             var cipherKey256 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
 
             var aes = AesContext.AES256;
-            var encrypted = aes.EncryptStringToBytes(plainText, cipherKey256);
+            byte[] encrypted;
+            using (var encryptor = aes.CreateEncryptor(cipherKey256, null))
+            {
+                encrypted = CryptoHelpers.EncryptString(encryptor, plainText);
+            }
 
-            var actual = aes.DecryptStringFromBytes(encrypted, cipherKey256);
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey256, null))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
 
             Assert.Equal(plainText, actual);
         }
@@ -168,11 +194,19 @@ namespace CryptoSym.AES.Tests
             var cipherKey128 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
 
             var aes = AesContext.AES128;
-            var encrypted = aes.EncryptBytes(inputBytes, cipherKey128);
+            byte[] encrypted;
+            using (var encryptor = aes.CreateEncryptor(cipherKey128, null))
+            {
+                encrypted = CryptoHelpers.EncryptBytes(encryptor, inputBytes);
+            }
 
-            var actual = aes.DecryptBytes(encrypted, cipherKey128);
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey128, null))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
 
-            Assert.Equal(inputBytes, actual);
+            Assert.Equal(plainText, actual);
         }
 
         [Fact]
@@ -184,9 +218,17 @@ namespace CryptoSym.AES.Tests
             var cipherKey192 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, };
 
             var aes = AesContext.AES192;
-            var encrypted = aes.EncryptBytes(inputBytes, cipherKey192);
+            byte[] encrypted;
+            using (var encryptor = aes.CreateEncryptor(cipherKey192, null))
+            {
+                encrypted = CryptoHelpers.EncryptBytes(encryptor, inputBytes);
+            }
 
-            var actual = aes.DecryptStringFromBytes(encrypted, cipherKey192);
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey192, null))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
 
             Assert.Equal(plainText, actual);
         }
@@ -200,9 +242,17 @@ namespace CryptoSym.AES.Tests
             var cipherKey256 = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
 
             var aes = AesContext.AES256;
-            var encrypted = aes.EncryptBytes(inputBytes, cipherKey256);
+            byte[] encrypted;
+            using (var encryptor = aes.CreateEncryptor(cipherKey256, null))
+            {
+                encrypted = CryptoHelpers.EncryptBytes(encryptor, inputBytes);
+            }
 
-            var actual = aes.DecryptStringFromBytes(encrypted, cipherKey256);
+            string actual;
+            using (var decryptor = aes.CreateDecryptor(cipherKey256, null))
+            {
+                actual = CryptoHelpers.DecryptToString(decryptor, encrypted);
+            }
 
             Assert.Equal(plainText, actual);
         }

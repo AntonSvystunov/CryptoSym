@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CryptoSym.AES\CryptoSym.AES.csproj" />
+    <ProjectReference Include="..\CryptoSym.Common\CryptoSym.Common.csproj" />
   </ItemGroup>
 
 </Project>

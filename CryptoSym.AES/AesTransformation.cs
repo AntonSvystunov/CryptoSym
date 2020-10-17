@@ -201,5 +201,50 @@ namespace CryptoSym.AES
                 }
             }
         }
+
+        public static byte[] EncryptBlock(byte[] plainText, byte[] cipherKey)
+        {
+            int Nr = cipherKey.Length / 4 + Nb + 2;
+
+            byte[] state = (byte[])plainText.Clone();
+            uint[] schedule = KeyExpansion(cipherKey);
+            AddRoundKey(state, schedule.Take(Nb).ToArray());
+
+            for (int round = 1; round < Nr; round++)
+            {
+                SubBytes(state);
+                ShiftRows(state);
+                MixColumns(state);
+                AddRoundKey(state, schedule.Skip(round * Nb).Take(Nb).ToArray());
+            }
+
+            SubBytes(state);
+            ShiftRows(state);
+            AddRoundKey(state, schedule.Skip(Nr * Nb).Take(Nb).ToArray());
+            return state;
+        }
+
+        public static byte[] DecryptBlock(byte[] chipherText, byte[] chipherKey)
+        {
+            int Nr = chipherKey.Length / 4 + Nb + 2;
+
+            byte[] state = (byte[])chipherText.Clone();
+            uint[] schedule = KeyExpansion(chipherKey);
+
+            AddRoundKey(state, schedule.Skip(Nr * Nb).Take(Nb).ToArray());
+
+            for (int round = Nr - 1; round > 0; round--)
+            {
+                InvShiftRows(state);
+                InvSubBytes(state);
+                AddRoundKey(state, schedule.Skip(round * Nb).Take(Nb).ToArray());
+                InvMixColumns(state);
+            }
+
+            InvShiftRows(state);
+            InvSubBytes(state);
+            AddRoundKey(state, schedule.Take(Nb).ToArray());
+            return state;
+        }
     }
 }

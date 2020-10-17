@@ -43,12 +43,10 @@ namespace CryptoSym.RC4.Tests
             byte[] encodedBytes;
             using (MemoryStream msEncrypt = new MemoryStream())
             {
-                using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-                {
-                    csEncrypt.Write(plainBytes);
-                    csEncrypt.FlushFinalBlock();
-                    encodedBytes = msEncrypt.ToArray();
-                }
+                using CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
+                csEncrypt.Write(plainBytes);
+                csEncrypt.FlushFinalBlock();
+                encodedBytes = msEncrypt.ToArray();
             }
 
             var decodedBytes = rc4.Decrypt(encodedBytes, keyBytes);
@@ -93,12 +91,10 @@ namespace CryptoSym.RC4.Tests
             byte[] encodedBytes;
             using (MemoryStream msEncrypt = new MemoryStream())
             {
-                using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-                {
-                    csEncrypt.Write(plainBytes);
-                    csEncrypt.FlushFinalBlock();
-                    encodedBytes = msEncrypt.ToArray();
-                }
+                using CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
+                csEncrypt.Write(plainBytes);
+                csEncrypt.FlushFinalBlock();
+                encodedBytes = msEncrypt.ToArray();
             }
 
             var decodedBytes = rc4.Decrypt(encodedBytes, keyBytes);

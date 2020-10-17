@@ -7,41 +7,69 @@ using System.Threading.Tasks;
 
 namespace CryptoSym.AES
 {
-    internal class AesDecryptor : ICryptoTransform
+    internal sealed class AesDecryptor : ICryptoTransform
     {
-        private readonly AesContext _aesContext;
-        private readonly byte[] _key;
+        private byte[] _key;
+        private byte[] _iv;
         private readonly bool _parallel;
+        private readonly AesStreamMode _streamMode;
 
-        public AesDecryptor(byte[] key, AesContext.AES type, bool parallel = false)
+        public AesDecryptor(byte[] key, byte[] iv, bool parallel = false, AesStreamMode streamMode = AesStreamMode.ECB)
         {
-            _aesContext = new AesContext(type);
-            if (key.Length != _aesContext.KeySize * 4) throw new ArgumentException("Key size not supported");
             _key = (byte[])key.Clone();
+            if (streamMode != AesStreamMode.ECB)
+            {
+                _iv = (byte[])iv.Clone();
+            }
             _parallel = parallel;
-        }
-
-        public AesDecryptor(byte[] key, AesContext aesContext, bool parallel = false)
-        {
-            _aesContext = aesContext;
-            if (key.Length != _aesContext.KeySize * 4) throw new ArgumentException("Key size not supported");
-            _key = (byte[])key.Clone();
-            _parallel = parallel;
+            _streamMode = streamMode;
         }
 
         public bool CanReuseTransform => false;
 
         public bool CanTransformMultipleBlocks => true;
 
-        public int InputBlockSize => _aesContext.BlockSize * 4;
+        public int InputBlockSize => 16;
 
-        public int OutputBlockSize => _aesContext.BlockSize * 4;
+        public int OutputBlockSize => 16;
 
         public void Dispose()
         {
+            if (_key != null)
+            {
+                Array.Clear(_key, 0, _key.Length);
+            }
+
+            if (_iv != null)
+            {
+                Array.Clear(_iv, 0, _iv.Length);
+            }
+
+            _key = null;
+            _iv = null;
         }
 
         public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
+        {
+            return _streamMode switch
+            {
+                AesStreamMode.ECB => EBC(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset),
+                _ => throw new NotImplementedException($"Stream mode {_streamMode} not implemented for AES")
+            };            
+        }
+
+        public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
+        {
+            if (inputCount == 0) return new byte[0];
+
+            var tempBuffer = new byte[InputBlockSize];
+            Array.Copy(inputBuffer, inputOffset, tempBuffer, 0, inputCount);
+            var transformed = new byte[InputBlockSize];
+            TransformBlock(tempBuffer, 0, InputBlockSize, transformed, 0);
+            return transformed;
+        }
+
+        private int EBC(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
         {
             int bytesDecrypted = 0;
 
@@ -49,10 +77,10 @@ namespace CryptoSym.AES
             {
                 Parallel.For(0, inputCount / InputBlockSize, (i) =>
                 {
-                    byte[] input = inputBuffer.Skip(inputOffset + i * InputBlockSize).Take(InputBlockSize).ToArray();
-                    byte[] key = (byte[])_key.Clone();
+                    byte[] input = inputBuffer.Skip(inputOffset + i).Take(InputBlockSize).ToArray();
 
-                    byte[] output = _aesContext.Decrypt(input, key);
+                    byte[] key = (byte[])_key.Clone();
+                    byte[] output = AesTransformation.DecryptBlock(input, key);
 
                     if ((i + 1) * InputBlockSize >= inputCount)
                     {
@@ -64,18 +92,19 @@ namespace CryptoSym.AES
                         }
                     }
 
-                    output.CopyTo(outputBuffer, outputOffset + i * InputBlockSize);
+                    output.CopyTo(outputBuffer, outputOffset + i);
                     bytesDecrypted += output.Length;
                 });
-            } 
+            }
             else
             {
                 for (int i = 0; i < inputCount; i += InputBlockSize)
                 {
                     byte[] input = inputBuffer.Skip(inputOffset + i).Take(InputBlockSize).ToArray();
+
                     byte[] key = (byte[])_key.Clone();
 
-                    byte[] output = _aesContext.Decrypt(input, key);
+                    byte[] output = AesTransformation.DecryptBlock(input, key);
 
                     if (i + InputBlockSize >= inputCount)
                     {
@@ -92,19 +121,7 @@ namespace CryptoSym.AES
                 }
             }
 
-
             return bytesDecrypted;
-        }
-
-        public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
-        {
-            if (inputCount == 0) return new byte[0];
-
-            var tempBuffer = new byte[InputBlockSize];
-            Array.Copy(inputBuffer, inputOffset, tempBuffer, 0, inputCount);
-            var transformed = new byte[InputBlockSize];
-            TransformBlock(tempBuffer, 0, InputBlockSize, transformed, 0);
-            return transformed;
         }
     }
 }

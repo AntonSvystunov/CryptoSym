@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CryptoSym.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
@@ -9,41 +10,6 @@ namespace CryptoSym.Salsa20.Tests
 {
     public class Salsa20ContextTests
     {
-        private byte[] EncryptToBytes(ICryptoTransform cryptoTransform, string plainText)
-        {
-            byte[] encrypted;
-            using (MemoryStream msEncrypt = new MemoryStream())
-            {
-                using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, cryptoTransform, CryptoStreamMode.Write))
-                {
-                    using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
-                    {
-                        swEncrypt.Write(plainText);
-                    }
-                    encrypted = msEncrypt.ToArray();
-                }
-            }
-            return encrypted;
-        }
-
-        private string DecryptToString(ICryptoTransform cryptoTransform, byte[] cipherText)
-        {
-            string plaintext = null;
-
-            using (MemoryStream msDecrypt = new MemoryStream(cipherText))
-            {
-                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, cryptoTransform, CryptoStreamMode.Read))
-                {
-                    using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                    {
-                        plaintext = srDecrypt.ReadToEnd();
-                    }
-                }
-            }
-
-            return plaintext;
-        }
-
         [Fact]
         public void RoundTrip32()
         {
@@ -54,8 +20,8 @@ namespace CryptoSym.Salsa20.Tests
 
             var plainText = "Hello World 123 aasjakjskakjahjdkha jkdhjkaSHJKD HASJKDHASJDJKASH DJKASHDJ AJDH217EH12W1HE89H I912H EH12 H";
 
-            var encrypted = EncryptToBytes(salsa.CreateEncryptor(k, n), plainText);
-            var roundTrip = DecryptToString(salsa.CreateDecryptor(k, n), encrypted);
+            var encrypted = CryptoHelpers.EncryptString(salsa.CreateEncryptor(k, n), plainText);
+            var roundTrip = CryptoHelpers.DecryptToString(salsa.CreateDecryptor(k, n), encrypted);
 
             Assert.Equal(plainText, roundTrip);
         }
@@ -70,8 +36,8 @@ namespace CryptoSym.Salsa20.Tests
 
             var plainText = "Hello World 123 aasjakjskakjahjdkha jkdhjkaSHJKD HASJKDHASJDJKASH DJKASHDJ AJDH217EH12W1HE89H I912H EH12 H";
 
-            var encrypted = EncryptToBytes(salsa.CreateEncryptor(k, n), plainText);
-            var roundTrip = DecryptToString(salsa.CreateDecryptor(k, n), encrypted);
+            var encrypted = CryptoHelpers.EncryptString(salsa.CreateEncryptor(k, n), plainText);
+            var roundTrip = CryptoHelpers.DecryptToString(salsa.CreateDecryptor(k, n), encrypted);
 
             Assert.Equal(plainText, roundTrip);
         }
