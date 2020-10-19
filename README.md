@@ -123,5 +123,51 @@ File size: 1 gb
 | AES256 | - | - |
 | AES256- Parallel | - | - |
 
+File size 1mb
 
-
+| Algorithm	| Encryption time (ms) | Decryption time (ms) |
+|---|---|---|
+| Salsa20 - 128 bit key | 124 | 87 |
+| Salsa20 - 256 bit key | 86 | 82 |
+| --- |
+| RC4 - 8 bit block - 128 bit key | 177 | 175 |
+| RC4 - 8 bit block - 192 bit key | 175 | 178 |
+| RC4 - 8 bit block - 256 bit key | 174 | 168 |
+| RC4 - 16 bit block - 128 bit key | 177 | 175 |
+| RC4 - 16 bit block - 192 bit key | 175 | 178 |
+| RC4 - 16 bit block - 256 bit key | 174 | 168 |
+| --- |
+| ECB - AES128 | 2051 | 5832 |
+| ECB - AES128 - Parallel | 614 | 953 |
+| ECB - AES192 | 4094 | 7876 |
+| ECB - AES192 - Parallel | 811 | 1261 |
+| ECB - AES256 | 4870 | 9376 |
+| ECB - AES256 - Parallel | 796 | 1446 |
+| --- |
+| CBC - AES128 | 3487 | 6316 |
+| CBC - AES128 - Parallel | 551 | 988 |
+| CBC - AES192 | 4181 | 7689 |
+| CBC - AES192 - Parallel | 691 | 1601 |
+| CBC - AES256 | 4670 | 9293 |
+| CBC - AES256 - Parallel | 916 | 1619 |
+| --- |
+| CFB - AES128 | 3178 | 6668 |
+| CFB - AES128 - Parallel | 553 | 1013 |
+| CFB - AES192 | 4172 | 8073 |
+| CFB - AES192 - Parallel | 840 | 1281 |
+| CFB - AES256 | 4829 | 9469 |
+| CFB - AES256 - Parallel | 826 | 1514 |
+| --- |
+| OFB - AES128 | 3571 | 6382 |
+| OFB - AES128 - Parallel | 657 | 1265 |
+| OFB - AES192 | 3964 | 8161 |
+| OFB - AES192 - Parallel | 679 | 1239 |
+| OFB - AES256 | 4860 | 9461 |
+| OFB - AES256 - Parallel | 816 | 1841 |
+| --- |
+| CTR - AES128 | 3242 | 6992 |
+| CTR - AES128 - Parallel | 581 | 1044 |
+| CTR - AES192 | 4155 | 7783 |
+| CTR - AES192 - Parallel | 846 | 1187 |
+| CTR - AES256 | 4840 | 9117 |
+| CTR - AES256 - Parallel | 1129 | 1459 |
